@@ -1,10 +1,13 @@
 var express = require('express'),
-app = express(),
-path = require('path');
-bodyParser = require('body-parser'),
-logger = require('morgan'),
-methodOverride = require('method-override');
+    app = express(),
+    path = require('path');
+    bodyParser = require('body-parser'),
+    logger = require('morgan'),
+    methodOverride = require('method-override'),
+    passport = require('passport'),
+    LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
+require('dotenv').config();
 require('locus');
 
 // view engine setup
@@ -18,6 +21,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_API_KEY,
+  clientSecret: process.env.LINKEDIN_SECRET_KEY,
+  callbackURL: "http://127.0.0.1:3000/auth/linkedin/callback",
+  scope: ['r_emailaddress', 'r_basicprofile'],
+}, function(accessToken, refreshToken, profile, done) {
+  // asynchronous verification, for effect...
+  process.nextTick(function () {
+    // To keep the example simple, the user's LinkedIn profile is returned to
+    // represent the logged-in user. In a typical application, you would want
+    // to associate the LinkedIn account with a user record in your database,
+    // and return that user instead.
+    return done(null, profile);
+  });
+}));
+
 
 // routes
 
