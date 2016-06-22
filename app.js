@@ -28,6 +28,6 @@ app.use('/', main);
 app.use('/auth', auth);
 
 // start server
-app.listen('9001',() => {
+app.listen(process.env.port || '9001',() => {
   console.log('The Server is OVER 9000!!!');
 });
