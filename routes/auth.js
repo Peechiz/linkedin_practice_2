@@ -2,7 +2,7 @@ var express = require('express'),
   router = express.Router(),
   knex = require('../db/knex');
 
-router.get('/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE'  }),
+router.get('/linkedin', passport.authenticate('linkedin'),
 function(req, res){
   // The request will be redirected to LinkedIn for authentication, so this
   // function will not be called.

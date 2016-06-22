@@ -4,6 +4,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     logger = require('morgan'),
     methodOverride = require('method-override'),
+    cookieParser = require('cookie-parser'),
+    cookieSession = require('cookie-session'),
     passport = require('passport'),
     LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
@@ -29,15 +31,21 @@ passport.deserializeUser(function(user, done) {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
+app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.KEY1,process.env.KEY2]
+}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
+
 passport.use(new LinkedInStrategy({
   clientID: process.env.LINKEDIN_API_KEY,
   clientSecret: process.env.LINKEDIN_SECRET_KEY,
   callbackURL: process.env.HOST + "/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_basicprofile'],
+  state: true,
 }, function(accessToken, refreshToken, profile, done) {
   // asynchronous verification, for effect...
   process.nextTick(function () {
