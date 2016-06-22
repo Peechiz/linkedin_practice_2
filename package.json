@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,7 @@
     "method-override": "^2.3.6",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
-    "passport-linkedin": "^1.0.0",
+    "passport-linkedin-oauth2": "^1.4.1",
     "pg": "^6.0.0"
   }
 }
