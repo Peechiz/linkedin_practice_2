@@ -59,6 +59,7 @@ app.use('/', main);
 app.use('/auth', auth);
 
 // start server
-app.listen(process.env.port || '3000',() => {
-  console.log('Servering at 3000');
+var port = process.env.port || 3000;
+app.listen(port,() => {
+  console.log('Servering at ' + port);
 });
