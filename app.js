@@ -50,15 +50,20 @@ passport.use(new LinkedInStrategy({
   state: true
 }, function(accessToken, refreshToken, profile, done) {
   console.log(profile);
-  eval(locus)
   return done(null, {id: profile.id, displayName: profile.displayName, email: profile.emails[0].value, photos: profile.photos})
 }));
 
 // routes
-// app.use((req,res,next)=>{
-//   res.locals.user = req.session.passport.user;
-//   next();
-// })
+app.use((req,res,next)=>{
+  if (!req.session.passport) {
+    res.locals.user = null;
+    next();
+  }
+  else {
+    res.locals.user = req.session.passport.user;
+    next();
+  }
+})
 
 var main = require('./routes/main.js');
 var auth = require('./routes/auth.js');
