@@ -3,10 +3,12 @@ var express = require('express'),
   knex = require('../db/knex');
 
 router.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Express',
-    user: req.user
-  });
+  if (!res.locals.user) {
+    res.render('index', {user: null});
+  }
+  else {
+    res.render('index');
+  }
 })
 
 module.exports = router;

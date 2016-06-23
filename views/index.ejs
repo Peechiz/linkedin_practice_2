@@ -6,9 +6,15 @@
 </head>
 <body>
   <h1>Log in with linkedin or perish!</h1>
-  <a href="/auth/linkedin">Login!</a>
+  <% if (user) { %>
+  <img src="<%= user.photos[0].value %>" alt="">
+  <h3><%= user.displayName %></h3>
+  <p><%= user.email %></p>
   <p>
-    <a href="/auth/logout">Or Logout!</a> I don't even care.
+    <a href="/auth/logout">Logout!</a>
   </p>
+  <% } else { %>
+  <a href="/auth/linkedin">Login already!</a>
+  <% } %>
 </body>
 </html>

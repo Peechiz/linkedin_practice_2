@@ -18,6 +18,8 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 
 // above app.use('/', routes);...
+app.use(passport.initialize());
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -25,6 +27,7 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
   done(null, user)
 });
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -38,30 +41,28 @@ app.use(cookieSession({
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
 
 passport.use(new LinkedInStrategy({
   clientID: process.env.LINKEDIN_API_KEY,
   clientSecret: process.env.LINKEDIN_SECRET_KEY,
   callbackURL: process.env.HOST + "/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_basicprofile'],
-  state: true,
+  state: true
 }, function(accessToken, refreshToken, profile, done) {
-  // asynchronous verification, for effect...
-  process.nextTick(function () {
-    // To keep the example simple, the user's LinkedIn profile is returned to
-    // represent the logged-in user. In a typical application, you would want
-    // to associate the LinkedIn account with a user record in your database,
-    // and return that user instead.
-    return done(null, profile);
-  });
+  console.log(profile);
+  eval(locus)
+  return done(null, {id: profile.id, displayName: profile.displayName, email: profile.emails[0].value, photos: profile.photos})
 }));
 
-
 // routes
+// app.use((req,res,next)=>{
+//   res.locals.user = req.session.passport.user;
+//   next();
+// })
 
 var main = require('./routes/main.js');
 var auth = require('./routes/auth.js');
+
 
 app.use('/', main);
 app.use('/auth', auth);
